@@ -1,0 +1,15 @@
+If:
+    PathMatch: .*
+
+CompileFlags:
+    Add:
+        - -Wall
+        - -Wextra
+        - -Wpedantic
+        # - -xc++
+        - -std=c++17
+        # - --target=aarch64-linux-gnu
+        # - --include-directory=/usr/include/c++/11
+        # - --include-directory=/usr/include/aarch64-linux-gnu/c++/11
+    Compiler: g++
+

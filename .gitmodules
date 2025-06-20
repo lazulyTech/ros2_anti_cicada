@@ -1,0 +1,3 @@
+[submodule "src/socketcan_interface"]
+	path = src/socketcan_interface
+	url = https://github.com/hcmos/ros2-socketcan_interface.git
