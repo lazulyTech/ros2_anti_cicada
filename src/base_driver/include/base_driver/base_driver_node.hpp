@@ -44,6 +44,8 @@ private:
 
   // vals
   bool mode_manual;
+  double linear_x;
+  double angular_z;
 };
 
 }  // namespace base_driver

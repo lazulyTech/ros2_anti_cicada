@@ -12,18 +12,26 @@ BaseDriver::BaseDriver(const rclcpp::NodeOptions & options)
   device_canid(get_parameter("device_canid").as_int()),
   mode_manual(true)
 {
+  // モード切り替え
   auto _subscrption_cb_mode = [this](const std_msgs::msg::Bool::SharedPtr msg) -> void {
     mode_manual = msg->data;
     if (mode_manual == true) {
-      RCLCPP_INFO(this->get_logger(), "Mode: Manual");
+      for (int i = 0; i < 5; i++) {
+        RCLCPP_INFO(this->get_logger(), "Mode: Manual");
+      }
     } else {
-      RCLCPP_INFO(this->get_logger(), "Mode: Auto");
+      for (int i = 0; i < 5; i++) {
+        RCLCPP_INFO(this->get_logger(), "Mode: Auto");
+      }
     }
   };
   _subscrption_mode =
     this->create_subscription<std_msgs::msg::Bool>("mode_manual", _qos, _subscrption_cb_mode);
 
+  // コントローラからの情報
   auto _subscription_cb_vel = [this](const geometry_msgs::msg::Twist::SharedPtr msg) -> void {
+    linear_x = msg->linear.x;
+    angular_z = msg->angular.z;
     if (mode_manual) {
       _subscriber_callback_vel(msg);
     }
@@ -31,9 +39,17 @@ BaseDriver::BaseDriver(const rclcpp::NodeOptions & options)
   _subscrption_vel =
     this->create_subscription<geometry_msgs::msg::Twist>("cmd_vel", _qos, _subscription_cb_vel);
 
+  // OAK-Dからの情報
   auto _subscription_cb_oak = [this](const geometry_msgs::msg::Twist::SharedPtr msg) -> void {
+    auto msg_fus = std::make_shared<geometry_msgs::msg::Twist>();
+    msg_fus->linear.x = msg->linear.x + linear_x;
+    msg_fus->linear.y = msg->linear.y;
+    msg_fus->linear.z = msg->linear.z;
+    msg_fus->angular.x = msg->angular.x;
+    msg_fus->angular.y = msg->angular.y;
+    msg_fus->angular.z = msg->angular.z + angular_z;
     if (!mode_manual) {
-      _subscriber_callback_vel(msg);
+      _subscriber_callback_vel(msg_fus);
     }
   };
   _subscrption_oak = this->create_subscription<geometry_msgs::msg::Twist>(

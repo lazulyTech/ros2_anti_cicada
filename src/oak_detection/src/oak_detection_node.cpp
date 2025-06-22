@@ -12,8 +12,12 @@ OakDetection::OakDetection(const rclcpp::NodeOptions & option)
 {
   auto _subscription_cb_vision = [this](vision_msgs::msg::Detection2DArray::SharedPtr msg) -> void {
     // direction_obj(id_detect, msg);
+
+    int cnt_detect = 0;
+
     for (int i = 0; i < (int)msg->detections.size(); i++) {
       if (msg->detections.at(i).id == std::to_string(id_detect)) {
+        cnt_detect++;
         auto bb = std::make_shared<vision_msgs::msg::BoundingBox2D>(msg->detections.at(i).bbox);
 
         double anglar_increment = (width / 2.0f - bb->center.position.x) * gain_p;
@@ -28,6 +32,18 @@ OakDetection::OakDetection(const rclcpp::NodeOptions & option)
         publisher_vel->publish(*twist);
         RCLCPP_INFO(get_logger(), "angular: %f", anglar_increment);
       }
+    }
+
+    if (cnt_detect == 0) {
+      auto twist = std::make_shared<geometry_msgs::msg::Twist>();
+      twist->linear.x = 0.0;
+      twist->linear.y = 0.0;
+      twist->linear.z = 0.0;
+      twist->angular.x = 0.0;
+      twist->angular.y = 0.0;
+      twist->angular.z = 0.0;
+      publisher_vel->publish(*twist);
+      RCLCPP_INFO(get_logger(), "angular: 0 (no detection)");
     }
   };
   _subscription_vision = this->create_subscription<vision_msgs::msg::Detection2DArray>(

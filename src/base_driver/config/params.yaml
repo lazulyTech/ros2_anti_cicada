@@ -4,10 +4,33 @@ socketcan_interface_node:
 
 oak_detection_node:
   ros__parameters:
-    detection_id: 5
+    detection_id: 7
     height: 300
     width: 300
-    gain_p: 0.0025
+    gain_p: 0.0015
+
+#mobilenet object list
+# 0: background
+# 1: aeroplane
+# 2: bicycle
+# 3: bird
+# 4: boat
+# 5: bottle
+# 6: bus
+# 7: car
+# 8: cat
+# 9: chair
+# 10: cow
+# 11: diningtable
+# 12: dog
+# 13: horse
+# 14: motorbike
+# 15: person
+# 16: pottedplant
+# 17: sheep
+# 18: sofa
+# 19: train
+# 20: tvmonitor
 
 teleop_twist_joy_node:
   ros__parameters:
@@ -37,5 +60,5 @@ base_driver_node:
 joy_commander_node:
   ros__parameters:
     mode_button: 5
-    threshold: 20
+    threshold: 10
 
