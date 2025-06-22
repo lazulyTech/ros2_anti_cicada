@@ -2,6 +2,7 @@
 
 #include "base_driver/base_driver_node.hpp"
 #include "base_driver/joy_commander_node.hpp"
+#include "oak_detection/oak_detection_node.hpp"
 #include "socketcan_interface/socketcan_interface_node.hpp"
 
 int main(int argc, char * argv[])
@@ -15,10 +16,12 @@ int main(int argc, char * argv[])
   nodes_option.automatically_declare_parameters_from_overrides(true);
 
   auto socketcan_node = std::make_shared<socketcan_interface::SocketcanInterface>(nodes_option);
+  auto oak_detection_node = std::make_shared<oak_detection::OakDetection>(nodes_option);
   auto joy_commander_node = std::make_shared<base_driver::JoyCommander>(nodes_option);
   auto base_drive_node = std::make_shared<base_driver::BaseDriver>(nodes_option);
 
   exec.add_node(socketcan_node);
+  exec.add_node(oak_detection_node);
   exec.add_node(joy_commander_node);
   exec.add_node(base_drive_node);
 

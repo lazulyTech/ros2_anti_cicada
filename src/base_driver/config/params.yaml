@@ -2,6 +2,13 @@ socketcan_interface_node:
   ros__parameters:
     if_name : "can0"
 
+oak_detection_node:
+  ros__parameters:
+    detection_id: 5
+    height: 300
+    width: 300
+    gain_p: 0.0025
+
 teleop_twist_joy_node:
   ros__parameters:
     axis_linear:

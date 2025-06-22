@@ -30,6 +30,14 @@ BaseDriver::BaseDriver(const rclcpp::NodeOptions & options)
   };
   _subscrption_vel =
     this->create_subscription<geometry_msgs::msg::Twist>("cmd_vel", _qos, _subscription_cb_vel);
+
+  auto _subscription_cb_oak = [this](const geometry_msgs::msg::Twist::SharedPtr msg) -> void {
+    if (!mode_manual) {
+      _subscriber_callback_vel(msg);
+    }
+  };
+  _subscrption_oak = this->create_subscription<geometry_msgs::msg::Twist>(
+    "oak_d/cmd_vel", _qos, _subscription_cb_oak);
   // _subscrption_vel = this->create_subscription<geometry_msgs::msg::Twist>(
   // "cmd_vel", _qos, std::bind(&BaseDriver::_subscriber_callback_vel, this, std::placeholders::_1));
 

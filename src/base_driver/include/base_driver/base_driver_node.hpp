@@ -25,6 +25,9 @@ private:
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr _subscrption_vel;
   void _subscriber_callback_vel(const geometry_msgs::msg::Twist::SharedPtr msg);
 
+  rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr _subscrption_oak;
+  void _subscriber_callback_oak(const geometry_msgs::msg::Twist::SharedPtr msg);
+
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr _subscrption_mode;
 
   // publisher

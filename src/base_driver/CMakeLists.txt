@@ -22,6 +22,7 @@ add_executable(executor src/execute.cpp)
 ament_target_dependencies(executor
     rclcpp
     socketcan_interface
+    oak_detection
 )
 target_link_libraries(executor
     base_driver_node
